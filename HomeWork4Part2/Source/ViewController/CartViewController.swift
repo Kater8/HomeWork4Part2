@@ -30,7 +30,7 @@ class CartViewController: UIViewController {
     @IBAction private func buyButtonAction(_ sender: Any) {
         let title = "Підтвердження оплати"
         let message = "\nДо оплати:\n\n\(String(format: "%.2f", totalPrice)) \(selectedCurrency.rawValue)"
-        showConfirmationAlert(title: title, message: message, totalPrice: totalPrice, currency: selectedCurrency)
+         showConfirmationAlert(title: title, message: message, totalPrice: totalPrice, currency: selectedCurrency)
     }
     
     @IBAction func currencySegmentAction(_ segmentControl: UISegmentedControl) {
@@ -39,9 +39,9 @@ class CartViewController: UIViewController {
         case 0:
             selectedCurrency = .uah
         case 1:
-            selectedCurrency = .uah
+            selectedCurrency = .usd
         case 2:
-            selectedCurrency = .uah
+            selectedCurrency = .eur
         default:
             break
         }
@@ -49,6 +49,17 @@ class CartViewController: UIViewController {
     }
     
     @IBAction func discountSegmentAction(_ segmentControl: UISegmentedControl) {
+        let discountIndex = segmentControl.selectedSegmentIndex
+        switch discountIndex {
+        case 0:
+            discount = .none
+        case 1:
+            discount = .regular
+        case 2:
+            discount = .vip
+        default: break
+        }
+        
         showChanges()
     }
     
@@ -80,7 +91,8 @@ class CartViewController: UIViewController {
     private func showChanges() {
         let cartToShow = preparedCart()
         let printCheck = PrintCheck()
-        checkLabel.text = printCheck.textOfCheck(cart: cartToShow)
+        checkLabel.text = printCheck.textOfCheck(cart: cartToShow) + "\(discount)"
+       
     }
 }
 
